@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recent Flickr Pics</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+</head>
+<body>
+
+Search for a tag: <input type="text" id="tag"/>
+<input onclick="inputFunction()" type="button" value="Search"/>
+
+<div class="jumbotron">
+    <div class="container" id="images">
+
+    </div>
+</div>
+<script>
+    function inputFunction() {
+        // Get the value of the input field
+        var input = document.getElementById("tag").value;
+        // Flickr-API for the picture feed
+        var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+        // Get the vaules of the Flickr-API
+        $.getJSON(flickerAPI, {
+                    tags: input, // input = value of the input text field
+                    tagmode: "any",
+                    format: "json"
+                })
+                // get 10 pictures
+                .done(function (data) {
+                    $.each(data.items, function (i, item) { // put them in a <img> with thumbnail of bootstrap / append them to the <div> with id="images"
+                        $("<img class='img-thumbnail' height='187px'>").attr("src", item.media.m).appendTo("#images");
+                        if (i === 9) {
+                            return false;
+                        }
+                    });
+                });
+
+    };
+
+</script>
+</body>
+</html>
