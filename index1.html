@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Last 10 Flickr Picutres</title>
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+</head>
+<body>
+
+Search for a tag: <input type="text" id="tag"/>
+
+<div class="jumbotron">
+    <div class="container" id="images">
+
+    </div>
+</div>
+<script>
+
+        var thread = null;
+
+        function findTags(input) {
+            console.log(input);
+
+            var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+            // Get the vaules of the Flickr-API
+            $.getJSON(flickerAPI, {
+                        tags: input, // input = value of the input text field
+                        tagmode: "all",
+                        format: "json"
+                    })
+                    // get 10 pictures
+                    .done(function (data) {
+                        $.each(data.items, function (i, item) { // put them in a <img> with thumbnail of bootstrap / append them to the <div> with id="images"
+                            $("<img class='img-thumbnail'>").attr("src", item.media.m).appendTo("#images");
+                            if (i === 9) {
+                                return false;
+                            }
+                        });
+                    });
+
+        }
+        // Get the Value of the text input field while you type!
+        // The function takes the reads the value 500ms after your last typing (.keyup)
+        $('#tag').keyup(function () {
+            clearTimeout(thread);
+            var $this = $(this);
+            thread = setTimeout(function () {
+                findTags($this.val())
+            }, 500);
+
+        });
+
+</script>
+</body>
+</html>
