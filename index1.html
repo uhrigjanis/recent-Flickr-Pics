@@ -23,9 +23,9 @@ Search for a tag: <input type="text" id="tag"/>
 
         function findTags(input) {
             console.log(input);
-            // when pressing backspace once, the whole input field gets cleared. 
+            // when pressing Enter once, the whole input field gets cleared. 
             $('html').keyup(function(e){
-                if(e.keyCode == 8) {
+                if(e.keyCode == 13) {
 
                     var photo = document.getElementById("tag");
                     photo.value = "";               
