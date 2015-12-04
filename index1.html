@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Last 10 Flickr Picutres</title>
+    <title>Last 10 Flickr Pictures</title>
     <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css">
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
@@ -23,6 +23,20 @@ Search for a tag: <input type="text" id="tag"/>
 
         function findTags(input) {
             console.log(input);
+            // when pressing backspace once, the whole input field gets cleared. 
+            $('html').keyup(function(e){
+                if(e.keyCode == 8) {
+
+                    var photo = document.getElementById("tag");
+                    photo.value = "";               
+                    var photoDel = $(".img-thumbnail");     // All pictures of the last search will be deleted. 
+                    photoDel.remove();
+                }
+            });
+
+                if(input == ""){            // The search only works now when the input field is not empty-
+                    return false;
+                }else {
 
             var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
             // Get the vaules of the Flickr-API
@@ -40,7 +54,7 @@ Search for a tag: <input type="text" id="tag"/>
                             }
                         });
                     });
-
+                }
         }
         // Get the Value of the text input field while you type!
         // The function reads the value 500ms after your last typing (.keyup)
@@ -49,7 +63,7 @@ Search for a tag: <input type="text" id="tag"/>
             var $this = $(this);
             thread = setTimeout(function () {
                 findTags($this.val())
-            }, 500);
+            }, 750);
 
         });
 
